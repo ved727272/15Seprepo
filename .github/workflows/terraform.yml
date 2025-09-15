@@ -26,9 +26,15 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: ./environment
 
+      # 5️⃣ Terraform Plan
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=tfplan
+        working-directory: ./environment
 
+      # 6️⃣ Terraform Apply
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        if: github.ref == 'refs/heads/main'   # only apply on main branch
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./environment
