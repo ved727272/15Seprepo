@@ -1,40 +1,47 @@
-name: Deploy Terraform to Azure
+name: Terraform Deployment
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIAL }}
-          
-
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.8.5   # ya jo version aap use kar rahe ho
+          terraform_version: 1.7.0
 
       - name: Terraform Init
+        working-directory: ./environment
         run: terraform init
-        working-directory: ./environment
+        env:
+          ARM_CLIENT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientId }}
+          ARM_CLIENT_SECRET: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientSecret }}
+          ARM_SUBSCRIPTION_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).subscriptionId }}
+          ARM_TENANT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).tenantId }}
 
-      # 5️⃣ Terraform Plan
       - name: Terraform Plan
+        working-directory: ./environment
         run: terraform plan -out=tfplan
-        working-directory: ./environment
+        env:
+          ARM_CLIENT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientId }}
+          ARM_CLIENT_SECRET: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientSecret }}
+          ARM_SUBSCRIPTION_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).subscriptionId }}
+          ARM_TENANT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).tenantId }}
 
-      # 6️⃣ Terraform Apply
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'   # only apply on main branch
-        run: terraform apply -auto-approve tfplan
         working-directory: ./environment
+        run: terraform apply -auto-approve tfplan
+        env:
+          ARM_CLIENT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientId }}
+          ARM_CLIENT_SECRET: ${{ fromJSON(secrets.AZURE_CREDENTIAL).clientSecret }}
+          ARM_SUBSCRIPTION_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).subscriptionId }}
+          ARM_TENANT_ID: ${{ fromJSON(secrets.AZURE_CREDENTIAL).tenantId }}
