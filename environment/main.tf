@@ -15,7 +15,7 @@ module "subnet" {
 module "sql_server" {
     source = "../modules/azurerm_sql_server"
     resource_group_name = "raman_rg"
-    resource_group_location = "west"
+    resource_group_location = "westus"
     sql_server_name = "raman-sql-server"
     sql_admin_username = "sqladminuser"
     sql_admin_password = "Raman@12345"
