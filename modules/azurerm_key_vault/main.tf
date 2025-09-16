@@ -33,3 +33,33 @@ resource "azurerm_key_vault_secret" "serverpassword" {
     key_vault_id = data.azurerm_key_vault.key_vault.id
   
 }
+
+resource "azurerm_key_vault_secret" "vm_username" {
+  name         = var.vm_username_secret_name
+  value        = var.vm_username_secret_value
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "vm_password" {
+  name         = var.vm_password_secret_name
+  value        = var.vm_password_secret_value
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+
+
+variable "vm_username_secret_name" {
+  type = string
+}
+
+variable "vm_username_secret_value" {
+  type = string
+}
+
+variable "vm_password_secret_name" {
+  type = string
+}
+
+variable "vm_password_secret_value" {
+  type = string
+}
