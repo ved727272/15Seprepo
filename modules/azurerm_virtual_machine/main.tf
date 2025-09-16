@@ -3,8 +3,8 @@ resource "azurerm_linux_virtual_machine" "vm1" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
-  admin_username      = azurerm_key_vault_secret.vmusername.value
-  admin_password      = azurerm_key_vault_secret.vmpassword.value
+  admin_username      = vm_username
+  admin_password      = vm_password
   disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.vm_nic.id,

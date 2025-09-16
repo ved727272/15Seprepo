@@ -46,8 +46,8 @@ module "virtual_machine" {
     resource_group_name = "raman_rg"
     resource_group_location = "westus"
     vm_name = "raman_vm"
-    vm_username_secret_name = "vmusername"
-    vm_password_secret_name = "vmpassword"
+    vm_username = "adminuser"
+    vm_password = "Password@123"
     subnet_id = module.subnet.subnet_id
     lb_backend_address_pool_id = module.lb.lb_backend_address_pool_id
   
@@ -60,17 +60,17 @@ module "lb_nic_association" {
     lb_backend_address_pool_id = module.lb.lb_backend_address_pool_id
 }
 
-module "key_vault" {
-    source = "../modules/azurerm_key_vault"
-    resource_group_name = "raman_rg"
-    resource_group_location = "westus"
-    key_vault_name = "raman_kv"
-    vm_username_secret_name = "vmusername"
-    vm_username_secret_value = "adminuser"
-    vm_password_secret_name = "vmpassword"
-    vm_password_secret_value = "Raman@12345"
+# module "key_vault" {
+#     source = "../modules/azurerm_key_vault"
+#     resource_group_name = "raman_rg"
+#     resource_group_location = "westus"
+#     key_vault_name = "raman_kv"
+#     vm_username_secret_name = "vmusername"
+#     vm_username_secret_value = "adminuser"
+#     vm_password_secret_name = "vmpassword"
+#     vm_password_secret_value = "Raman@12345"
 
-}
+# }
 
 module "public_ip" {
     source = "../modules/azurerm_public_ip"
