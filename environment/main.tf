@@ -14,8 +14,8 @@ module "subnet" {
 
 module "sql_server" {
     source = "../modules/azurerm_sql_server"
-    resource_group_name = module.rg.resource_group_name
-    resource_group_location = module.rg.resource_group_location
+    resource_group_name = "raman_rg"
+    resource_group_location = "westus"
     sql_server_name = "raman-sql-server"
     sql_admin_username = "sqladminuser"
     sql_admin_password = "Raman@12345"
@@ -24,11 +24,9 @@ module "sql_server" {
 module "sql_database" {
     depends_on = [ module.sql_server ]
     source = "../modules/azurerm_sql_database"
-    resource_group_name = module.rg.resource_group_name
-    sql_server_name = module.sql_server.sql_server_name
-    sql_database_name = "raman_sqldb"
-    sku_name = "S0"
+    
   
+
 }
 
 module "lb" {
